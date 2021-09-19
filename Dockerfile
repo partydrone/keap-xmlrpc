@@ -11,7 +11,7 @@ RUN gem install yard
 
 WORKDIR /opt/gem
 
-COPY lib/keap/rest/version.rb ./lib/keap/rest/version.rb
+COPY lib/keap/xmlrpc/version.rb ./lib/keap/xmlrpc/version.rb
 COPY Gemfile* *.gemspec ./
 RUN bundle install
 COPY . .

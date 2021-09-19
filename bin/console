@@ -2,7 +2,7 @@
 # frozen_string_literal: true
 
 require "bundler/setup"
-require "keap/rest"
+require "keap/xmlrpc"
 
 # You can add fixtures and/or initialization code here to make experimenting
 # with your gem easier. You can also use a different console, if you like.
@@ -11,7 +11,7 @@ require "keap/rest"
 # require "pry"
 # Pry.start
 
-@client ||= Keap::REST.client
+@client ||= Keap::XMLRPC.client
 
 require "irb"
 IRB.start(__FILE__)
