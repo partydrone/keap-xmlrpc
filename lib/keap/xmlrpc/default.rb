@@ -1,12 +1,13 @@
-require "keap/rest/version"
+require "keap/xmlrpc/version"
 
 module Keap
   module XMLRPC
     module Default
-      API_ENDPOINT = "https://api.infusionsoft.com/crm/rest/v1".freeze
+      API_ENDPOINT = "https://api.infusionsoft.com/crm/xmlrpc/v1".freeze
       AUTHORIZE_URL = "https://accounts.infusionsoft.com/app/oauth/authorize".freeze
+      TOKEN_STORE = "Keap::XMLRPC::TokenStore".freeze
       TOKEN_URL = "https://api.infusionsoft.com/token".freeze
-      USER_AGENT = "Keap XMLRPC Ruby Gem #{Keap::XMLRPC::VERSION}".freeze
+      USER_AGENT = "Keap XML-RPC Ruby Gem #{Keap::XMLRPC::VERSION}".freeze
 
       class << self
         def options
@@ -15,10 +16,6 @@ module Keap
 
         def access_token
           ENV["KEAP_XMLRPC_ACCESS_TOKEN"] || ENV["KEAP_ACCESS_TOKEN"]
-        end
-
-        def adapter
-          Faraday.default_adapter
         end
 
         def api_endpoint
@@ -41,7 +38,8 @@ module Keap
           ENV["KEAP_XMLRPC_REDIRECT_URI"] || ENV["KEAP_REDIRECT_URI"]
         end
 
-        def stubs
+        def token_store
+          ENV["KEAP_XMLRPC_TOKEN_STORE"] || ENV["KEAP_TOKEN_STORE"] || TOKEN_STORE
         end
 
         def token_url

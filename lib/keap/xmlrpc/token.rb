@@ -1,4 +1,6 @@
 require "base64"
+require "faraday"
+require "faraday_middleware"
 require "time"
 
 module Keap
@@ -90,13 +92,9 @@ module Keap
         def connection
           @connection ||= Faraday.new(Keap::XMLRPC.token_url) do |http|
             http.headers[:user_agent] = Keap::XMLRPC.user_agent
-
             http.request :url_encoded
-
             http.response :json
-            http.response :logger, nil, {headers: true, body: true}
-
-            http.adapter Keap::XMLRPC.adapter
+            http.adapter Faraday.default_adapter
           end
         end
       end

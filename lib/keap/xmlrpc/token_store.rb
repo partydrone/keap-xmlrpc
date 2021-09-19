@@ -10,16 +10,30 @@ module Keap
         # @return [Token]
         #
         def get_token
-          "b86qpzY9j5cXO4WAWlkABVYOs97W"
+          token = load_token
+          return token.access_token unless token.expired?
+          new_token = Keap::XMLRPC::Token.refresh(refresh_token: token.refresh_token)
+          save_token(new_token)
+          new_token.access_token
         end
 
-        # Save a {Token} object in the store.
+        # Retrieve a {Token} object from the store.
+        #
+        # @return [Token]
+        #
+        def load_token
+          @stored_token
+        end
+
+        # Save a {Token} object to the store.
         #
         # @param token [Token] A token object.
         #
         # @return [Boolean]
         #
         def save_token(token)
+          @stored_token = token
+          !!@stored_token
         end
       end
     end

@@ -1,21 +1,18 @@
 # frozen_string_literal: true
 
-require "faraday"
-require "faraday_middleware"
+require "thor"
+require "xmlrpc/client"
 
 module Keap
   # Ruby toolkit for the Keap XML-RPC API.
   #
   module XMLRPC
     autoload :Client, "keap/xmlrpc/client"
-    autoload :Collection, "keap/xmlrpc/collection"
     autoload :Configurable, "keap/xmlrpc/configurable"
     autoload :Connection, "keap/xmlrpc/connection"
     autoload :Default, "keap/xmlrpc/default"
     autoload :Error, "keap/xmlrpc/error"
-    autoload :MerchantsCollection, "keap/xmlrpc/merchants_collection"
     autoload :Object, "keap/xmlrpc/object"
-    autoload :Response, "keap/xmlrpc/response"
     autoload :Token, "keap/xmlrpc/token"
     autoload :TokenStore, "keap/xmlrpc/token_store"
 
@@ -26,7 +23,8 @@ module Keap
     autoload :AffiliateCommission, "keap/xmlrpc/objects/affiliate_commission"
     autoload :AffiliatePayment, "keap/xmlrpc/objects/affiliate_payment"
     autoload :AffiliateProgram, "keap/xmlrpc/objects/affiliate_program"
-    autoload :AffiliateRedirect, "keap/xmlrpc/objects/affiliate_redirect"
+    autoload :AffiliateRedirectLink, "keap/xmlrpc/objects/affiliate_redirect_link"
+    autoload :AffiliateRunningTotal, "keap/xmlrpc/objects/affiliate_running_total"
     autoload :AffiliateSummary, "keap/xmlrpc/objects/affiliate_summary"
     autoload :Appointment, "keap/xmlrpc/objects/appointment"
     autoload :Campaign, "keap/xmlrpc/objects/campaign"
@@ -60,7 +58,7 @@ module Keap
 
       # API client based on configured options {Configurable}
       #
-      # @return [Keap::XMLRPC::Client] API wrapper
+      # @return [Client] API wrapper
       #
       def client
         return @client if defined?(@client) && @client.same_options?(options)

@@ -1,6 +1,6 @@
 module Keap
   module XMLRPC
-    class AffiliateRedirect < Object
+    class AffiliateRunningTotal < Object
     end
   end
 end

@@ -5,19 +5,19 @@ module Keap
       #   @return [String] OAuth2 access token for authentication.
       # @!attribute adapter
       #   @return [Faraday::Adapter] HTTP library adapter.
-      attr_accessor :access_token, :adapter, :api_endpoint, :authorize_url, :client_id, :client_secret, :redirect_uri, :stubs, :token_url, :user_agent
+      attr_accessor :access_token, :api_endpoint, :authorize_url, :client_id, :client_secret, :redirect_uri, :token_url, :user_agent
+      attr_writer :token_store
 
       class << self
         def keys
           @keys ||= [
             :access_token,
-            :adapter,
             :api_endpoint,
             :authorize_url,
             :client_id,
             :client_secret,
             :redirect_uri,
-            :stubs,
+            :token_store,
             :token_url,
             :user_agent
           ]
@@ -39,6 +39,10 @@ module Keap
 
       def same_options?(opts)
         opts.hash == options.hash
+      end
+
+      def token_store
+        Object.const_get @token_store
       end
 
       private
