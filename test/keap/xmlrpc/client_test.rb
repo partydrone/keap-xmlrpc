@@ -79,75 +79,13 @@ describe Keap::XMLRPC::Client do
   describe ".last_response" do
     it "caches the last agent response" do
       Keap::XMLRPC.reset!
-      stub = stub_request(:get, "account/profile", response: stub_response(fixture: "account/info"))
-      client = subject.new(access_token: "fake", adapter: :test, stubs: stub)
+      client = subject.new(access_token: "fake")
 
       _(client.last_response).must_be_nil
 
-      client.account
+      client.find_contact_by_email("peter.parker@example.com")
 
       _(client.last_response.status).must_equal 200
-    end
-  end
-
-  describe ".get" do
-    before do
-      Keap::XMLRPC.reset!
-    end
-
-    it "handles query params" do
-      # stub = stub_request(:get, "account/profile", response: stub_response(fixture: "account/info"))
-    end
-  end
-
-  describe "error handling" do
-    it "raises on 400" do
-      stub = stub_request(:get, "whatever", response: stub_response(status: 400, fixture: "errors/400"))
-      client = subject.new(access_token: "fake", adapter: :test, stubs: stub)
-
-      _ { client.connection.get("whatever") }.must_raise Keap::XMLRPC::BadRequest
-    end
-
-    it "raises on 401" do
-      stub = stub_request(:get, "who_are_you", response: stub_response(status: 401, fixture: "errors/401"))
-      client = subject.new(access_token: "fake", adapter: :test, stubs: stub)
-
-      _ { client.connection.get("who_are_you") }.must_raise Keap::XMLRPC::Unauthorized
-    end
-
-    it "raises on 403" do
-      stub = stub_request(:get, "nope", response: stub_response(status: 403, fixture: "errors/403"))
-      client = subject.new(access_token: "fake", adapter: :test, stubs: stub)
-
-      _ { client.connection.get("nope") }.must_raise Keap::XMLRPC::Forbidden
-    end
-
-    it "raises on 404" do
-      stub = stub_request(:get, "what", response: stub_response(status: 404, fixture: "errors/404"))
-      client = subject.new(access_token: "fake", adapter: :test, stubs: stub)
-
-      _ { client.connection.get("what") }.must_raise Keap::XMLRPC::NotFound
-    end
-
-    it "raises on 422" do
-      stub = stub_request(:get, "say_again", response: stub_response(status: 422, fixture: "errors/422"))
-      client = subject.new(access_token: "fake", adapter: :test, stubs: stub)
-
-      _ { client.connection.get("say_again") }.must_raise Keap::XMLRPC::UnprocessableEntity
-    end
-
-    it "raises on 500" do
-      stub = stub_request(:get, "boom", response: stub_response(status: 500, fixture: "errors/500"))
-      client = subject.new(access_token: "fake", adapter: :test, stubs: stub)
-
-      _ { client.connection.get("boom") }.must_raise Keap::XMLRPC::InternalServerError
-    end
-
-    it "raises on 503" do
-      stub = stub_request(:get, "hmm", response: stub_response(status: 503, fixture: "errors/503"))
-      client = subject.new(access_token: "fake", adapter: :test, stubs: stub)
-
-      _ { client.connection.get("hmm") }.must_raise Keap::XMLRPC::ServiceUnavailable
     end
   end
 end
